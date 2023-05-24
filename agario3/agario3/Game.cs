@@ -37,13 +37,11 @@ public class Game
         Window.renderWindow.Closed += (_, _) => isPlaying = false;
 
         SpawnPlayer();
-        for (int i = 0; i < 500; i++)
-        {
-            SpawnFood();
-        }
-
+        RespawnAllFood();
+        
         MainCamera.SetupCamera();
         Time.Start();
+        
         isPlaying = true;
         
         GameLoop();
@@ -56,12 +54,24 @@ public class Game
            Time.UpdateTimer();
            Window.DispatchEvents();
 
+           Input.CheckMouseInput();
+           
            UpdateObjects();
 
            ownPlayer.CheckCollisionWithFood(foodList.ToArray());
 
            MainCamera.MoveCamera(ownPlayer.shape.Position);
            Window.Draw(drawableObjects);
+       }
+
+   }
+
+   private void RespawnAllFood()
+   {
+       foodList = new ();
+       for (int i = 0; i < GameSettings.maxFoodAmount; i++)
+       {
+           SpawnFood();
        }
 
    }

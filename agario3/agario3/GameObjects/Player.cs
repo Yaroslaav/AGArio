@@ -37,7 +37,7 @@ public class Player : GameObject
     }
     private void UpdateMovement()
     {
-        Vector2f targetPosition = Input.GetMouseInput();
+        Vector2f targetPosition = Input.lastDirection;
         Vector2f direction = targetPosition - Position;
 
         if (direction != new Vector2f(0, 0))

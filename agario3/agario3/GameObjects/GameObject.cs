@@ -14,7 +14,6 @@ public class GameObject : Transformable, IDrawable, IUpdatable
 {
     public int mass = 0;
     public int ZPosition { get; set; } = 0;
-    protected Shape baseShape;
 
     protected Texture texture;
 
@@ -27,12 +26,7 @@ public class GameObject : Transformable, IDrawable, IUpdatable
     }
     public virtual void PostCreate(GameObjArgs args)
     {
-        texture = args.texture;
-        baseShape = args.Shape;
-        baseShape.Position = args.Position;
-        baseShape.Texture = texture;
-        baseShape.TextureRect = args.Rect;
-        baseShape.FillColor = args.fillColor;
+        
     }
 
     public virtual void Update()

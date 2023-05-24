@@ -10,13 +10,14 @@ public enum InputType
 }
 public static class Input
 {
+    public static Vector2f lastDirection = new ();
     
-    public static Vector2f GetMouseInput()
+    public static void CheckMouseInput()
     {
         Vector2i mousePosition = Mouse.GetPosition(Window.renderWindow);
         Vector2f targetPosition = Window.MapPixelToCoords(mousePosition);
         Vector2f direction = targetPosition;
 
-        return direction;
+        lastDirection = direction;
     }
 }
