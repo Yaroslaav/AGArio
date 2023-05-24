@@ -3,14 +3,32 @@ using SFML.System;
 
 public class Player : GameObject
 {
-    private float moveSpeed = 2f;
-    CircleShape shape = new CircleShape();
-    protected override void Start()
+    
+    
+    private float moveSpeed = .5f;
+    private float maxMass = 70;
+    public Vector2f Position;
+    public CircleShape shape = new ();
+
+    public override void PostCreate(GameObjArgs args)
     {
-        base.Start();
+        shape.Radius = 30;
+        mass = (int)shape.Radius / 10;
         shape.Origin = new Vector2f(shape.Radius, shape.Radius);
-        SetNewShape(shape);
+        texture = args.texture;
+        shape.Position = args.Position;
+        Position = args.Position;
+        shape.Texture = texture;
+        shape.TextureRect = args.Rect;
+        shape.FillColor = args.fillColor;
+
     }
+
+    protected override Shape GetOriginalShape()
+    {
+        return shape;
+    }
+
 
     public override void Update()
     {
@@ -20,7 +38,7 @@ public class Player : GameObject
     private void UpdateMovement()
     {
         Vector2f targetPosition = Input.GetMouseInput();
-        Vector2f direction = (targetPosition - shape.Position);
+        Vector2f direction = targetPosition - Position;
 
         if (direction != new Vector2f(0, 0))
         {
@@ -30,11 +48,11 @@ public class Player : GameObject
             Position += direction * moveSpeed * Time.deltaTime;
         }
 		
-        ClampMovement();
+        CheckMovement();
 
         shape.Position = Position;
     }
-    private void ClampMovement()
+    private void CheckMovement()
     {
         if (Position.X < shape.Radius)
             Position.X = shape.Radius;
@@ -45,6 +63,20 @@ public class Player : GameObject
             Position.Y = shape.Radius;
         else if (Position.Y > GameSettings.FIELD_HEIGHT - shape.Radius)
             Position.Y = GameSettings.FIELD_HEIGHT - shape.Radius;
+    }
+
+    public void OnEat(float mass)
+    {
+        if (this.mass < maxMass)
+        {
+            Console.WriteLine("mass" + mass);
+            Console.WriteLine("max mass" + maxMass);
+            Console.WriteLine("radius" + shape.Radius);
+            shape.Radius += mass;
+            shape.Origin = new Vector2f(shape.Radius, shape.Radius);
+            this.mass = (int)shape.Radius / 10;
+        }
+            
     }
 
 
