@@ -1,6 +1,5 @@
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 public class Game
 {
@@ -10,14 +9,11 @@ public class Game
     
     private List<Food> foodList = new ();
 
-    //private List<Player> bots = new();
     private Player ownPlayer;
 
     private List<IDrawable> drawableObjects = new();
     private List<IUpdatable> updatableObjects = new();
-
-
-
+    
     public void SpawnPlayer()
     {
         Player spawnedPlayer = this.CreateActor<Player>(new CircleShape(), new IntRect(0, 0, 30, 30), null,
@@ -25,10 +21,6 @@ public class Game
         if (ownPlayer == null)
         {
             ownPlayer = spawnedPlayer;
-        }
-        else
-        {
-            //bots.Add(spawnedPlayer);
         }
     }
 
@@ -41,20 +33,20 @@ public class Game
     }
    public void Start()
    {
-            Window.SetWindow(); 
-            Window.renderWindow.Closed += (_, _) => isPlaying = false;
+        Window.SetWindow(); 
+        Window.renderWindow.Closed += (_, _) => isPlaying = false;
 
-            SpawnPlayer();
-            for (int i = 0; i < 500; i++)
-            {
-                SpawnFood();
-            }
+        SpawnPlayer();
+        for (int i = 0; i < 500; i++)
+        {
+            SpawnFood();
+        }
 
-            MainCamera.SetupCamera();
-            Time.Start();
-            isPlaying = true;
-            
-            GameLoop();
+        MainCamera.SetupCamera();
+        Time.Start();
+        isPlaying = true;
+        
+        GameLoop();
    }
 
    private void GameLoop()
@@ -64,17 +56,23 @@ public class Game
            Time.UpdateTimer();
            Window.DispatchEvents();
 
-           ownPlayer.Update();
+           UpdateObjects();
 
            ownPlayer.CheckCollisionWithFood(foodList.ToArray());
 
            MainCamera.MoveCamera(ownPlayer.shape.Position);
-           
            Window.Draw(drawableObjects);
        }
 
    }
 
+   private void UpdateObjects()
+   {
+       for (int i = 0; i < updatableObjects.Count; i++)
+       {
+           updatableObjects[i].Update();
+       }
+   }
     public void RegisterDrawableActor(IDrawable drawable)
     {
         if (!drawableObjects.Contains(drawable))
