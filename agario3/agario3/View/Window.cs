@@ -25,7 +25,7 @@ public static class Window
     }
     public static void SetWindow()
     {
-        renderWindow = new RenderWindow(new VideoMode(GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT), "Aero Hockey");
+        renderWindow = new RenderWindow(new VideoMode(GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT), GameSettings.WINDOW_TITLE);
         renderWindow.SetFramerateLimit(600);
         Clear();
     }
