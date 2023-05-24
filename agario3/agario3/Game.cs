@@ -13,7 +13,7 @@ public class Game
 
     private List<IDrawable> drawableObjects = new();
     private List<IUpdatable> updatableObjects = new();
-    
+
     public void SpawnPlayer()
     {
         Player spawnedPlayer = this.CreateActor<Player>(new CircleShape(), new IntRect(0, 0, 30, 30), null,
