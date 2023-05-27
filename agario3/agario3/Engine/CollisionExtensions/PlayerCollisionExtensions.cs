@@ -1,3 +1,5 @@
+using SFML.Graphics;
+
 public static class PlayerCollisionExtensions
 {
     public static void CheckCollisionWithFood(this Player player, Food[] foodArr)
@@ -8,11 +10,22 @@ public static class PlayerCollisionExtensions
             if (player.shape.CheckCollision(food.shape))
             {
                 player.OnEat(food.mass);
-                float zoomLevel = 1 + player.shape.Radius / 1000 * MainCamera.ZoomIncrement;
-                Console.WriteLine("Zoom " + zoomLevel);
-                MainCamera.Zoom(zoomLevel);
                    
                 food.OnWasEaten();
+            }
+        }
+
+    }
+    public static void CheckCollisionWithPlayers(this Player player, Player[] enemiesArr)
+    {
+        for (int i = 0; i < enemiesArr.Length; i++)
+        {
+            Player enemy = enemiesArr[i];
+            if (player.shape.CheckCollision(enemy.shape))
+            {
+                player.OnEat(enemy.mass);
+                   
+                enemy.OnWasEaten();
             }
         }
 

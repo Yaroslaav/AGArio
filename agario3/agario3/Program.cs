@@ -1,2 +1,2 @@
-﻿Game game = new ();
-game.Start();
+﻿GameLoop gameLoop = new ();
+gameLoop.Start();

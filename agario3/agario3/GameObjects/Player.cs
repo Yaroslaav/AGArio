@@ -3,12 +3,27 @@ using SFML.System;
 
 public class Player : GameObject
 {
+    private Random rand = new ();
     
+    public bool isBot;
+    private Vector2f lastBotDirection = new Vector2f(0, 0);
+
+    private int lastMoveTime = 0;
+    private int timeBetweenMoves = 0;
     
-    private float moveSpeed = .5f;
+    private float moveSpeed = .1f;
     private float maxMass = 70;
     public Vector2f Position;
     public CircleShape shape = new ();
+    public float diameter
+    {
+        get => shape.Radius * 2;
+    }
+
+    public Vector2f size
+    {
+        get => new (diameter, diameter);
+    }
 
     public override void PostCreate(GameObjArgs args)
     {
@@ -21,7 +36,6 @@ public class Player : GameObject
         shape.Texture = texture;
         shape.TextureRect = args.Rect;
         shape.FillColor = args.fillColor;
-
     }
 
     protected override Shape GetOriginalShape()
@@ -33,53 +47,55 @@ public class Player : GameObject
     public override void Update()
     {
         base.Update();
-        UpdateMovement();
+        TryMove();
     }
-    private void UpdateMovement()
+    private void UpdateMovement(Vector2f newDirection)
     {
-        Vector2f targetPosition = Input.lastDirection;
-        Vector2f direction = targetPosition - Position;
+        Vector2f direction = newDirection - Position;
 
-        if (direction != new Vector2f(0, 0))
+        if (direction.X != 0 || direction.Y != 0)
         {
-            float magnitude = MathF.Sqrt((direction.X * direction.X) + (direction.Y * direction.Y));
-            direction /= magnitude;
+            direction = direction.Normalize();
 
             Position += direction * moveSpeed * Time.deltaTime;
         }
 		
-        CheckMovement();
-
+        Position = Position.ClampByWindowSize(size);
         shape.Position = Position;
     }
-    private void CheckMovement()
-    {
-        if (Position.X < shape.Radius)
-            Position.X = shape.Radius;
-        else if (Position.X > GameSettings.FIELD_WIDTH - shape.Radius)
-            Position.X = GameSettings.FIELD_WIDTH - shape.Radius;
-
-        if (Position.Y < shape.Radius)
-            Position.Y = shape.Radius;
-        else if (Position.Y > GameSettings.FIELD_HEIGHT - shape.Radius)
-            Position.Y = GameSettings.FIELD_HEIGHT - shape.Radius;
-    }
-
     public void OnEat(float mass)
     {
         if (this.mass < maxMass)
         {
-            Console.WriteLine("mass" + mass);
-            Console.WriteLine("max mass" + maxMass);
-            Console.WriteLine("radius" + shape.Radius);
             shape.Radius += mass;
             shape.Origin = new Vector2f(shape.Radius, shape.Radius);
             this.mass = (int)shape.Radius / 10;
         }
-            
     }
 
+    public void OnWasEaten()
+    {
+        
+    }
 
+    private void TryMove()
+    {
+        if (Time.totalSeconds >= lastMoveTime + timeBetweenMoves)
+        {
+            lastBotDirection = Input.GetRandomBotDirection();
+            timeBetweenMoves = rand.Next(10);
+            lastMoveTime = Time.totalSeconds;
+            //Console.WriteLine($"bot Position {shape.Position} ");
+        }
+        if (!isBot)
+        {
+            UpdateMovement(Input.lastDirection);
+            //Console.WriteLine($"player Position {shape.Position} ");
+        }
+        else
+        {
+            UpdateMovement(lastBotDirection);
+        }
 
-    
+    }
 }

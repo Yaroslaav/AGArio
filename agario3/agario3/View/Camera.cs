@@ -1,26 +1,35 @@
 using SFML.Graphics;
 using SFML.System;
 
-public static class MainCamera
+public class Camera
 {
-    public static View camera;
-    public static float ZoomIncrement = .2f;
-    public static float maxZoom = 1.03f;
-
-
-    public static void SetupCamera()
+    public View camera;
+    public float ZoomIncrement = .2f;
+    public float maxZoom = 1.03f;
+    
+    private Window window
     {
-        camera = new (new FloatRect(Window.GetWindowCenter().X, Window.GetWindowCenter().Y, GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT));
+        get => Game.instance.window;
+    }
+
+    public Camera()
+    {
+        SetupCamera();
+    }
+    
+    public void SetupCamera()
+    {
+        camera = new (new FloatRect(window.GetWindowCenter().X, window.GetWindowCenter().Y, GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT));
         camera.Zoom(0.5f);
     }
 
-    public static void Zoom(float zoom)
+    public void Zoom(float zoom)
     {
         if(zoom<maxZoom)
             camera.Zoom(zoom);
     }
 
-    public static void MoveCamera(Vector2f newPosition)
+    public void MoveCamera(Vector2f newPosition)
     {
         camera.Center = newPosition;
     }
