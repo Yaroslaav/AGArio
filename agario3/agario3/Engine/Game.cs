@@ -12,6 +12,7 @@ public class Game
 
     public Player ownPlayer { get; private set; }
     public List<Player> players = new List<Player>();
+    
     public Vector2f ownPlayerPosition
     {
         get => ownPlayer.shape.Position;
@@ -48,7 +49,7 @@ public class Game
     
     private void SpawnPlayer()
     {
-        Player spawnedPlayer = GameLoop.Instance.CreateActor<Player>(new CircleShape(), new IntRect(0, 0, 30, 30), null,
+        Player spawnedPlayer = this.CreateActor<Player>(new CircleShape(), new IntRect(0, 0, 30, 30), null,
             new Vector2f(window.GetRandomPosition().X, window.GetRandomPosition().Y), Color.Green, Color.Black);
         if (ownPlayer == null)
         {
@@ -65,7 +66,7 @@ public class Game
     private void SpawnFood()
     {
         Vector2f foodPosition = window.GetRandomPosition();
-        Food food = GameLoop.Instance.CreateActor<Food>(new CircleShape(), new IntRect(0, 0, 10, 10), null, foodPosition, Color.Red, 
+        Food food = this.CreateActor<Food>(new CircleShape(), new IntRect(0, 0, 10, 10), null, foodPosition, Color.Red, 
             Color.White);
         foodList.Add(food);
     }

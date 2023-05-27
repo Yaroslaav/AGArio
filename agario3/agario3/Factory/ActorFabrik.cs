@@ -2,13 +2,13 @@
 using SFML.Graphics;
 public static class GameObjectFabrik
 {
-    public static T CreateActor<T>(this GameLoop game, Shape shape, IntRect rect, Texture texture, Vector2f position, Color fillColor, Color borderColor) where T:GameObject,new()
+    public static T CreateActor<T>(this Game game, Shape shape, IntRect rect, Texture texture, Vector2f position, Color fillColor, Color borderColor) where T:GameObject,new()
     {
         T t = CreateActor_Internal<T>(shape, rect, texture, position, fillColor, borderColor);
         if (t == null)
             return null;
 
-        game.RegisterGameObject(t);
+        GameLoop.Instance.RegisterGameObject(t);
         return t;
     }
     private static T CreateActor_Internal<T>(Shape shape, IntRect rect, Texture texture, Vector2f position, Color fillColor, Color borderColor) where T : GameObject, new()
