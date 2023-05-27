@@ -1,8 +1,10 @@
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 public class Game
 {
+    private Random rand = new Random();
     public static Game instance { get; private set; }
     
     public Camera mainCamera { get; private set; }
@@ -23,10 +25,13 @@ public class Game
         if(instance == null)
             instance = this;
         
+        
         window = new ();
         
         mainCamera = new ();
 
+        Input.Setup();
+        
         for (int i = 0; i < 5; i++)
         {
             SpawnPlayer();
@@ -41,6 +46,7 @@ public class Game
     }
     public void Update()
     {
+        InputProcessing();
         for (int i = 0; i < players.Count; i++)
         {
             players[i].CheckCollisionWithFood(foodList.ToArray());
@@ -70,5 +76,28 @@ public class Game
             Color.White);
         foodList.Add(food);
     }
-    
+
+    private void InputProcessing()
+    {
+        switch (Input.lastKey)
+        {
+            case Keyboard.Key.F:
+                ChangeMainPlayer();
+                Input.ClearLastKey();
+                break;
+            case Keyboard.Key.E:
+                ownPlayer.shape.FillColor = Color.Cyan;
+                break;
+            case Keyboard.Key.R:
+                ownPlayer.shape.FillColor = Color.Red;
+                break;
+        }
+    }
+    private void ChangeMainPlayer()
+    {
+        Player randomPlayer = players[rand.Next(players.Count)];
+        ownPlayer.isBot = true;
+        randomPlayer.isBot = false;
+        ownPlayer = randomPlayer;
+    }
 }

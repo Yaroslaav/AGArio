@@ -35,7 +35,7 @@ public class GameLoop
             Time.UpdateTimer();
             _game.window.DispatchEvents();
             
-            Input.CheckMouseInput();
+            Input.CheckInput();
             
             _game.ownPlayer.Update();
             Update();
