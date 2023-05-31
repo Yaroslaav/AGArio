@@ -15,6 +15,12 @@ public class Player : GameObject
     private float maxMass = 70;
     public Vector2f Position;
     public CircleShape shape = new ();
+
+    public bool canBeEaten = true;
+
+    private Shield _shield;
+    private int shieldCooldown = 10;
+    
     public float diameter
     {
         get => shape.Radius * 2;
@@ -27,9 +33,9 @@ public class Player : GameObject
 
     public Action OnWasEaten;
     
-    public override void PostCreate(GameObjArgs args)
+    public override void Awake(GameObjArgs args)
     {
-        shape.Radius = 30;
+        shape.Radius = args.size.X/2;
         mass = (int)shape.Radius / 10;
         shape.Origin = new Vector2f(shape.Radius, shape.Radius);
         texture = args.texture;
@@ -38,8 +44,18 @@ public class Player : GameObject
         shape.Texture = texture;
         shape.TextureRect = args.Rect; 
         shape.FillColor = args.fillColor;
-        OnWasEaten += () => Game.instance.players.Remove(this);
-        OnWasEaten += () => GameLoop.Instance.UnRegisterGameObject(this);
+        
+        OnWasEaten += () => Game.instance.DestroyGameObject(this);
+    }
+
+    public void Start(bool isBot)
+    {
+        this.isBot = isBot;
+
+        if (!isBot)
+        {
+            Input.activateShield += ActivateShield;
+        }
     }
 
     protected override Shape GetOriginalShape()
@@ -99,5 +115,15 @@ public class Player : GameObject
     public void OnSwitchSoul()
     {
         isBot = !isBot;
+    }
+
+    private void ActivateShield()
+    {
+        float shieldDiameter = diameter * 1.2f;
+        _shield = Game.instance.CreateActor<Shield>(new Vector2f(shieldDiameter, shieldDiameter),
+            new IntRect(0, 0, 0, 0), null, shape.Position, new Color(23, 190, 187, 50), Color.Black);
+        
+        canBeEaten = false;
+        _shield.onDestroy += () => canBeEaten = true;
     }
 }

@@ -6,8 +6,13 @@ public static class Input
 {
     private static Random rand = new ();
     public static Vector2f lastPlayerDirection;
+    
     public static Action swapMainPlayer;
     private static bool soulSwapKeyActive;
+
+    public static Action activateShield;
+    private static bool shieldActivationKeyActive;
+    
     private static Window window
     {
         get => Game.instance.window;
@@ -17,6 +22,7 @@ public static class Input
     {
         CheckMouseInput();
         CheckPlayerSwapInput();
+        CheckActivationShiledInput();
     }
     private static void CheckMouseInput()
     {
@@ -47,7 +53,6 @@ public static class Input
         if(GetKeyboardPlayerSwap())
             swapMainPlayer?.Invoke();
     }
-
     private static bool GetKeyboardPlayerSwap()
     {
         if (!soulSwapKeyActive)
@@ -56,6 +61,25 @@ public static class Input
             return Keyboard.IsKeyPressed(Keyboard.Key.F);
         }
         soulSwapKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.F);
+
+        return false;
+    }
+
+    private static void CheckActivationShiledInput()
+    {
+        if(GetKeyboardShiledActivation())
+            activateShield?.Invoke();
+    }
+
+    private static bool GetKeyboardShiledActivation()
+    {
+        if (!shieldActivationKeyActive)
+        {
+            shieldActivationKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.S);
+            return Keyboard.IsKeyPressed(Keyboard.Key.S);
+        }
+        
+        shieldActivationKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.S);
 
         return false;
     }

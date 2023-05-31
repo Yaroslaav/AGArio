@@ -8,10 +8,10 @@ public class Food : GameObject
     public CircleShape shape = new ();
 
     
-    public override void PostCreate(GameObjArgs args)
+    public override void Awake(GameObjArgs args)
     {
         mass = 1;
-        shape.Radius = 10;
+        shape.Radius = args.size.X/2;
         texture = args.texture;
         shape.Position = args.Position;
         shape.Texture = texture;

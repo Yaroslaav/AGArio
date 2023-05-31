@@ -1,15 +1,9 @@
 using SFML.Graphics;
 using SFML.System;
 
-public enum GameObjectType
-{
-    Player,
-    Food,
-    Another,
-}
 public struct GameObjArgs
 {
-    public Shape Shape;
+    public Vector2f size;
     public IntRect Rect;
     public Vector2f Position;
     public Texture texture;
@@ -30,7 +24,7 @@ public class GameObject : Transformable, IDrawable, IUpdatable
     {
         return null;
     }
-    public virtual void PostCreate(GameObjArgs args)
+    public virtual void Awake(GameObjArgs args)
     {
         
     }
