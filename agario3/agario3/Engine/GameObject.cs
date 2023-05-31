@@ -1,6 +1,12 @@
 using SFML.Graphics;
 using SFML.System;
 
+public enum GameObjectType
+{
+    Player,
+    Food,
+    Another,
+}
 public struct GameObjArgs
 {
     public Shape Shape;

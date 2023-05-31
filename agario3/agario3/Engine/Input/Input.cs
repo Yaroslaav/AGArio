@@ -4,22 +4,19 @@ using SFML.Window;
 
 public static class Input
 {
-    private static Random rand = new Random();
-    public static Vector2f lastDirection = new ();
-    public static Keyboard.Key lastKey = Keyboard.Key.Unknown;
+    private static Random rand = new ();
+    public static Vector2f lastPlayerDirection;
+    public static Action swapMainPlayer;
+    private static bool soulSwapKeyActive;
     private static Window window
     {
         get => Game.instance.window;
     }
 
-    public static void Setup()
-    {
-        window.renderWindow.KeyPressed += SetLastKey;
-    }
-
     public static void CheckInput()
     {
         CheckMouseInput();
+        CheckPlayerSwapInput();
     }
     private static void CheckMouseInput()
     {
@@ -27,7 +24,7 @@ public static class Input
         Vector2f targetPosition = window.MapPixelToCoords(mousePosition);
         Vector2f direction = targetPosition;
 
-        lastDirection = direction;
+        lastPlayerDirection = direction;
     }
     
     public static Vector2f GetRandomBotDirection()
@@ -43,16 +40,23 @@ public static class Input
             direction.Y += 1;
         }
 
-Console.WriteLine($"Direction {direction}");
         return direction;
     }
-
-
-
-    private static void SetLastKey(object sender, KeyEventArgs e)
+    private static void CheckPlayerSwapInput()
     {
-        lastKey = e.Code;
+        if(GetKeyboardPlayerSwap())
+            swapMainPlayer?.Invoke();
     }
 
-    public static void ClearLastKey() => lastKey = Keyboard.Key.Unknown;
+    private static bool GetKeyboardPlayerSwap()
+    {
+        if (!soulSwapKeyActive)
+        {
+            soulSwapKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.F);
+            return Keyboard.IsKeyPressed(Keyboard.Key.F);
+        }
+        soulSwapKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.F);
+
+        return false;
+    }
 }

@@ -30,8 +30,6 @@ public class Game
         
         mainCamera = new ();
 
-        Input.Setup();
-        
         for (int i = 0; i < 5; i++)
         {
             SpawnPlayer();
@@ -43,13 +41,15 @@ public class Game
  
         mainCamera.SetupCamera();
         Time.Start();
+
+        Input.swapMainPlayer += SwapMainPlayer;
     }
     public void Update()
     {
-        InputProcessing();
         for (int i = 0; i < players.Count; i++)
         {
             players[i].CheckCollisionWithFood(foodList.ToArray());
+            players[i].CheckCollisionWithPlayers(players.ToArray());
         }
     }
     
@@ -77,27 +77,11 @@ public class Game
         foodList.Add(food);
     }
 
-    private void InputProcessing()
-    {
-        switch (Input.lastKey)
-        {
-            case Keyboard.Key.F:
-                ChangeMainPlayer();
-                Input.ClearLastKey();
-                break;
-            case Keyboard.Key.E:
-                ownPlayer.shape.FillColor = Color.Cyan;
-                break;
-            case Keyboard.Key.R:
-                ownPlayer.shape.FillColor = Color.Red;
-                break;
-        }
-    }
-    private void ChangeMainPlayer()
+    private void SwapMainPlayer()
     {
         Player randomPlayer = players[rand.Next(players.Count)];
-        ownPlayer.isBot = true;
-        randomPlayer.isBot = false;
+        ownPlayer.OnSwitchSoul();
+        randomPlayer.OnSwitchSoul();
         ownPlayer = randomPlayer;
     }
 }

@@ -25,6 +25,8 @@ public class Player : GameObject
         get => new (diameter, diameter);
     }
 
+    public Action OnWasEaten;
+    
     public override void PostCreate(GameObjArgs args)
     {
         shape.Radius = 30;
@@ -34,8 +36,10 @@ public class Player : GameObject
         shape.Position = args.Position;
         Position = args.Position;
         shape.Texture = texture;
-        shape.TextureRect = args.Rect;
+        shape.TextureRect = args.Rect; 
         shape.FillColor = args.fillColor;
+        OnWasEaten += () => Game.instance.players.Remove(this);
+        OnWasEaten += () => GameLoop.Instance.UnRegisterGameObject(this);
     }
 
     protected override Shape GetOriginalShape()
@@ -73,11 +77,6 @@ public class Player : GameObject
         }
     }
 
-    public void OnWasEaten()
-    {
-        
-    }
-
     private void TryMove()
     {
         if (Time.totalSeconds >= lastMoveTime + timeBetweenMoves)
@@ -85,17 +84,20 @@ public class Player : GameObject
             lastBotDirection = Input.GetRandomBotDirection();
             timeBetweenMoves = rand.Next(10);
             lastMoveTime = Time.totalSeconds;
-            //Console.WriteLine($"bot Position {shape.Position} ");
         }
         if (!isBot)
         {
-            UpdateMovement(Input.lastDirection);
-            //Console.WriteLine($"player Position {shape.Position} ");
+            UpdateMovement(Input.lastPlayerDirection);
         }
         else
         {
             UpdateMovement(lastBotDirection);
         }
 
+    }
+
+    public void OnSwitchSoul()
+    {
+        isBot = !isBot;
     }
 }

@@ -21,11 +21,23 @@ public static class PlayerCollisionExtensions
         for (int i = 0; i < enemiesArr.Length; i++)
         {
             Player enemy = enemiesArr[i];
-            if (player.shape.CheckCollision(enemy.shape))
+            if(player.mass == enemy.mass)
+                continue;
+            if (enemy != player)
             {
-                player.OnEat(enemy.mass);
-                   
-                enemy.OnWasEaten();
+                if (player.shape.CheckCollision(enemy.shape))
+                {
+                    if (player.mass > enemy.mass)
+                    {
+                        player.OnEat(enemy.mass);
+                        enemy.OnWasEaten?.Invoke();
+                    }
+                    else
+                    {
+                        enemy.OnEat(enemy.mass);
+                        player.OnWasEaten?.Invoke();
+                    }
+                }
             }
         }
 

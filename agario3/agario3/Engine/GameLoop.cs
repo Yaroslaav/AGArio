@@ -73,7 +73,7 @@ public class GameLoop
         }
     }
 
-    private void UnRegisterGameObject(GameObject gameObject)
+    public void UnRegisterGameObject(GameObject gameObject)
     {
         if (updatableObjects.Contains(gameObject))
         {
