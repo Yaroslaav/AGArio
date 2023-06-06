@@ -1,5 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 public class Player : GameObject
 {
@@ -48,14 +49,20 @@ public class Player : GameObject
         OnWasEaten += () => Game.instance.DestroyGameObject(this);
     }
 
+    private void CreateBindings()
+    {
+        if (!isBot)
+        {
+            BindKey shieldActivationKey = Input.AddNewBind( Keyboard.Key.S, "ActivateShield", PressType.Press);
+            shieldActivationKey.onActivate += ActivateShield;
+        }
+    }
+
     public void Start(bool isBot)
     {
         this.isBot = isBot;
 
-        if (!isBot)
-        {
-            Input.activateShield += ActivateShield;
-        }
+        CreateBindings();
     }
 
     protected override Shape GetOriginalShape()

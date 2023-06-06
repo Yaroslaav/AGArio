@@ -9,8 +9,8 @@ public class Shield : GameObject
 
     public Action onDestroy;
 
-    public void SetPosition(Vector2f position)
-    {
+   public void SetPosition(Vector2f position)
+    {   
         shape.Position = position;
     }
 

@@ -5,14 +5,17 @@ using SFML.Window;
 public static class Input
 {
     private static Random rand = new ();
-    public static Vector2f lastPlayerDirection;
+    public static Vector2f lastPlayerDirection = new (0,0);
+    public static Keyboard.Key lastKeyboardKey = Keyboard.Key.Unknown;
     
     public static Action swapMainPlayer;
     private static bool soulSwapKeyActive;
 
     public static Action activateShield;
     private static bool shieldActivationKeyActive;
-    
+
+    public static Dictionary<string, BindKey> keys = new(0);
+
     private static Window window
     {
         get => Game.instance.window;
@@ -21,8 +24,7 @@ public static class Input
     public static void CheckInput()
     {
         CheckMouseInput();
-        CheckPlayerSwapInput();
-        CheckActivationShiledInput();
+        CheckKeys();
     }
     private static void CheckMouseInput()
     {
@@ -48,39 +50,19 @@ public static class Input
 
         return direction;
     }
-    private static void CheckPlayerSwapInput()
+
+    private static void CheckKeys()
     {
-        if(GetKeyboardPlayerSwap())
-            swapMainPlayer?.Invoke();
-    }
-    private static bool GetKeyboardPlayerSwap()
-    {
-        if (!soulSwapKeyActive)
+        foreach (BindKey key in keys.Values)
         {
-            soulSwapKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.F);
-            return Keyboard.IsKeyPressed(Keyboard.Key.F);
+            key.CheckInput();
         }
-        soulSwapKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.F);
-
-        return false;
     }
 
-    private static void CheckActivationShiledInput()
+    public static BindKey AddNewBind(Keyboard.Key key, string name, PressType pressType)
     {
-        if(GetKeyboardShiledActivation())
-            activateShield?.Invoke();
-    }
-
-    private static bool GetKeyboardShiledActivation()
-    {
-        if (!shieldActivationKeyActive)
-        {
-            shieldActivationKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.S);
-            return Keyboard.IsKeyPressed(Keyboard.Key.S);
-        }
-        
-        shieldActivationKeyActive = Keyboard.IsKeyPressed(Keyboard.Key.S);
-
-        return false;
+        BindKey bindKey = new BindKey(key, pressType);
+        keys.Add(name, bindKey);
+        return bindKey;
     }
 }

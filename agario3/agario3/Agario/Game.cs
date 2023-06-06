@@ -41,7 +41,7 @@ public class Game
         mainCamera.SetupCamera();
         Time.Start();
 
-        Input.swapMainPlayer += SwapMainPlayer;
+        CreateBindings();
     }
     public void Update()
     {
@@ -56,16 +56,13 @@ public class Game
     {
         Player spawnedPlayer = this.CreateActor<Player>(new Vector2f(60,60), new IntRect(0, 0, 60, 60), null,
             new Vector2f(window.GetRandomPosition().X, window.GetRandomPosition().Y), Color.Green, Color.Black);
+        spawnedPlayer.Start(ownPlayer != null);
+        
         if (ownPlayer == null)
         {
-            spawnedPlayer.isBot = false;
             ownPlayer = spawnedPlayer;
         }
-        else
-        {
-            spawnedPlayer.isBot = true;
-        }
-        spawnedPlayer.
+        
         players.Add(spawnedPlayer);
 
     }
@@ -104,5 +101,11 @@ public class Game
             }
         }
         GameLoop.Instance.UnRegisterGameObject(gameObject);
+    }
+
+    private void CreateBindings()
+    {
+        BindKey changeSoulKey = Input.AddNewBind(Keyboard.Key.F, "ChangeSoul", PressType.Press);
+        changeSoulKey.onActivate += SwapMainPlayer;
     }
 }
