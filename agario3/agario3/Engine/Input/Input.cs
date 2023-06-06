@@ -14,7 +14,7 @@ public static class Input
     public static Action activateShield;
     private static bool shieldActivationKeyActive;
 
-    public static Dictionary<string, BindKey> keys = new(0);
+    private static Dictionary<string, BindKey> keys = new(0);
 
     private static Window window
     {
