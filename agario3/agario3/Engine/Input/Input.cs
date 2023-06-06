@@ -5,15 +5,10 @@ using SFML.Window;
 public static class Input
 {
     private static Random rand = new ();
+    
     public static Vector2f lastPlayerDirection = new (0,0);
     public static Keyboard.Key lastKeyboardKey = Keyboard.Key.Unknown;
     
-    public static Action swapMainPlayer;
-    private static bool soulSwapKeyActive;
-
-    public static Action activateShield;
-    private static bool shieldActivationKeyActive;
-
     private static Dictionary<string, BindKey> keys = new(0);
 
     private static Window window
