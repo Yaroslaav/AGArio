@@ -1,6 +1,7 @@
-public class GameLoop
+public class GameLoop : ISavable
 {
     public static GameLoop Instance { get; private set; }
+    public int test;
 
     private Game _game;
     
@@ -8,6 +9,11 @@ public class GameLoop
     
     private List<IDrawable> drawableObjects = new();
     private List<IUpdatable> updatableObjects = new();
+
+    public string pathToSavedFile { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents") + "/Agario/Saves/GameSettings.cfg";
+    public string pathToDefaultFile { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents") + "/Agario/DefaultSaves/GameSettings.cfg";
+    public List<(string, string, string)> savableItems { get; set; } = new ();
+
     
     private Camera _camera
     {
@@ -83,5 +89,77 @@ public class GameLoop
         {
             drawableObjects.Remove(gameObject);
         }
+    }
+
+    public static GameLoop CreateNew()
+    {
+        GameLoop newGameLoop = new GameLoop();
+        
+        
+        StreamReader sr = new StreamReader(pathToSavedFile);
+        while (!sr.EndOfStream)
+        {
+            var info = sr.ReadLine().Split(' ');
+            if(info.Length < 3)
+                continue;
+            
+            string valueType = info[0];
+            string variableName = info[1];
+            string value = info[2];
+            
+            if (Type.GetType(valueType) == null)
+            {
+                continue;
+            }
+
+            object type = Activator.CreateInstance(Type.GetType(valueType));
+            
+            switch (type)
+            {
+                case int:
+                    if (int.TryParse(value, out int _value))
+                    {
+                        newGameLoop.TrySetIntVariable(variableName, _value);
+                    }
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            
+            
+        }
+        Console.WriteLine(newGameLoop.test + "    variable");
+        return newGameLoop;
+    }
+
+    private void LoadInfo()
+    {
+        
+    }
+
+    public void AddSavableItem(string type, string name, string value)
+    {
+        savableItems.Add((type,name,value));
+    }
+    public void RemoveSavableItem(string name)
+    {
+        for (int i = 0; i < savableItems.Count; i++)
+        {
+            if (savableItems[i].Item2 == name)
+            {
+                savableItems.Remove(savableItems[i]);
+            }
+        }
+    }
+    public (string, string, string) GetSavableItem(string name)
+    {
+        foreach (var item in savableItems)
+        {
+            if (item.Item2 == name)
+            {
+                return item;
+            }
+        }
+        return (null, null, null);
     }
 }
