@@ -4,8 +4,7 @@ public interface ISavable
     public string pathToDefaultFile { get; protected set; }
     public List<(string, string, string)> savableItems { get; protected set; }
     
-    protected void AddSavableItem(string type, string name, string value);
     protected void RemoveSavableItem(string name);
-    public (string, string, string) GetSavableItem(string name);
-    
+
+    public void Save();
 }

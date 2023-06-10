@@ -9,6 +9,7 @@ public class GameLoop : ISavable
     
     private List<IDrawable> drawableObjects = new();
     private List<IUpdatable> updatableObjects = new();
+    private List<ISavable> savableObjects = new();
 
     public string pathToSavedFile { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents") + "/Agario/Saves/GameSettings.cfg";
     public string pathToDefaultFile { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents") + "/Agario/DefaultSaves/GameSettings.cfg";
@@ -25,13 +26,15 @@ public class GameLoop : ISavable
         if (Instance == null)
             Instance = this;
         
+        savableObjects.Add(this);
+        
         _game = new ();
         _game.Start();
         
         _game.window.renderWindow.Closed += (_, _) => isPlaying = false;
 
         isPlaying = true;
-        
+        //AddSavableItem(test);
         Loop();
     }
     private void Loop()
@@ -49,6 +52,8 @@ public class GameLoop : ISavable
             _game.Update();
                
             _game.window.Draw(drawableObjects);
+            if(test<int.MaxValue)
+                test++;
         }
     }
 
@@ -58,23 +63,35 @@ public class GameLoop : ISavable
         {
             updatableObjects[i].Update();
         }
+
+        for (int i = 0; i < savableObjects.Count; i++)
+        {
+            savableObjects[i].Save();
+        }
     }
     
     public void RegisterGameObject(GameObject gameObject)
     {
         if (gameObject is IDrawable)
         {
-            if (!drawableObjects.Contains(gameObject))
+            if (!drawableObjects.Contains(gameObject as IDrawable))
             {
-                drawableObjects.Add(gameObject);
+                drawableObjects.Add(gameObject as IDrawable);
             }
             
         }
         if (gameObject is IUpdatable)
         {
-            if (!updatableObjects.Contains(gameObject))
+            if (!updatableObjects.Contains(gameObject as IUpdatable))
             {
-                updatableObjects.Add(gameObject);
+                updatableObjects.Add(gameObject as IUpdatable);
+            }
+        }
+        if (gameObject is ISavable)
+        {
+            if (!savableObjects.Contains(gameObject as ISavable))
+            {
+                savableObjects.Add(gameObject as ISavable);
             }
         }
     }
@@ -94,72 +111,45 @@ public class GameLoop : ISavable
     public static GameLoop CreateNew()
     {
         GameLoop newGameLoop = new GameLoop();
-        
-        
-        StreamReader sr = new StreamReader(pathToSavedFile);
-        while (!sr.EndOfStream)
-        {
-            var info = sr.ReadLine().Split(' ');
-            if(info.Length < 3)
-                continue;
-            
-            string valueType = info[0];
-            string variableName = info[1];
-            string value = info[2];
-            
-            if (Type.GetType(valueType) == null)
-            {
-                continue;
-            }
-
-            object type = Activator.CreateInstance(Type.GetType(valueType));
-            
-            switch (type)
-            {
-                case int:
-                    if (int.TryParse(value, out int _value))
-                    {
-                        newGameLoop.TrySetIntVariable(variableName, _value);
-                    }
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-            
-            
-        }
-        Console.WriteLine(newGameLoop.test + "    variable");
+        newGameLoop.LoadGameLoopInfo();
         return newGameLoop;
     }
-
-    private void LoadInfo()
-    {
-        
-    }
-
-    public void AddSavableItem(string type, string name, string value)
-    {
-        savableItems.Add((type,name,value));
-    }
     public void RemoveSavableItem(string name)
-    {
-        for (int i = 0; i < savableItems.Count; i++)
-        {
-            if (savableItems[i].Item2 == name)
-            {
-                savableItems.Remove(savableItems[i]);
-            }
-        }
-    }
-    public (string, string, string) GetSavableItem(string name)
     {
         foreach (var item in savableItems)
         {
             if (item.Item2 == name)
             {
-                return item;
+                savableItems.Remove(item);
             }
+
         }
-        return (null, null, null);
     }
+    private void UpdateSavableItemsValues()
+    {
+        for (int i = 0; i < savableItems.Count; i++)
+        {
+            (string type, string name, string value) = savableItems[i];
+            value = typeof(GameLoop).GetField(savableItems[i].Item2).GetValue(this).ToString();
+            savableItems[i] = (type, name, value);
+        }
+    }
+
+    public void Save()
+    {
+        UpdateSavableItemsValues();
+        StreamWriter sw = new StreamWriter(pathToSavedFile);
+
+        foreach (var item in savableItems)
+        {
+            sw.WriteLine($"{item.Item1} {item.Item2} {item.Item3}");
+        }
+        sw.Close();
+    }
+
+    public void SetSavableItems(List<(string,string,string)> items)
+    {
+        savableItems = new(items);
+    }
+
 }
