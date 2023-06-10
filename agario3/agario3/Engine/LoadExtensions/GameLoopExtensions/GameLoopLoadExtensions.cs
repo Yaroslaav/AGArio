@@ -1,4 +1,6 @@
 
+using System.Reflection;
+
 public static class GameLoopLoadExtensions
 {
     public static GameLoop LoadGameLoopInfo(this GameLoop gameLoop)
@@ -26,16 +28,18 @@ public static class GameLoopLoadExtensions
                 continue;
             
             savableItems.Add((variableType,variableName,value));
+
+            FieldInfo fieldInfo = typeof(GameLoop).GetField(variableName);
             switch (type)
             {
                 case int:
                     if (int.TryParse(value, out int _value))
                     {
-                        typeof(GameLoop).GetField(variableName)?.SetValue(gameLoop, _value);
+                        fieldInfo?.SetValue(gameLoop, _value);
                     }
                     break;
                 case string:
-                    typeof(GameLoop).GetField(variableName).SetValue(gameLoop, value);
+                    fieldInfo?.SetValue(gameLoop, value);
                     break;
                 default:
                     throw new NotImplementedException();
