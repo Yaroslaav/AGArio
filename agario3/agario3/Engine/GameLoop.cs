@@ -1,7 +1,6 @@
-public class GameLoop : ISavable
+public class GameLoop
 {
     public static GameLoop Instance { get; private set; }
-    public int test;
 
     private Game _game;
     
@@ -9,12 +8,6 @@ public class GameLoop : ISavable
     
     private List<IDrawable> drawableObjects = new();
     private List<IUpdatable> updatableObjects = new();
-    private List<ISavable> savableObjects = new();
-
-    public string pathToSavedFile { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents") + "/Agario/Saves/GameSettings.cfg";
-    public string pathToDefaultFile { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents") + "/Agario/DefaultSaves/GameSettings.cfg";
-    public List<(string, string, string)> savableItems { get; set; } = new ();
-
     
     private Camera _camera
     {
@@ -107,49 +100,4 @@ public class GameLoop : ISavable
             drawableObjects.Remove(gameObject);
         }
     }
-
-    public static GameLoop CreateNew()
-    {
-        GameLoop newGameLoop = new GameLoop();
-        newGameLoop.LoadGameLoopInfo();
-        return newGameLoop;
-    }
-    public void RemoveSavableItem(string name)
-    {
-        foreach (var item in savableItems)
-        {
-            if (item.Item2 == name)
-            {
-                savableItems.Remove(item);
-            }
-
-        }
-    }
-    private void UpdateSavableItemsValues()
-    {
-        for (int i = 0; i < savableItems.Count; i++)
-        {
-            (string type, string name, string value) = savableItems[i];
-            value = typeof(GameLoop).GetField(savableItems[i].Item2).GetValue(this).ToString();
-            savableItems[i] = (type, name, value);
-        }
-    }
-
-    public void Save()
-    {
-        UpdateSavableItemsValues();
-        StreamWriter sw = new StreamWriter(pathToSavedFile);
-
-        foreach (var item in savableItems)
-        {
-            sw.WriteLine($"{item.Item1} {item.Item2} {item.Item3}");
-        }
-        sw.Close();
-    }
-
-    public void SetSavableItems(List<(string,string,string)> items)
-    {
-        savableItems = new(items);
-    }
-
 }

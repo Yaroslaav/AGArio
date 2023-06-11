@@ -25,7 +25,7 @@ public class GameObject : Transformable, IDrawable, IUpdatable
         return null;
     }
     public virtual void Awake(GameObjArgs args)
-    { 
+    {
         
     }
 
