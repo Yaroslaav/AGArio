@@ -19,8 +19,6 @@ public class GameLoop
         if (Instance == null)
             Instance = this;
         
-        savableObjects.Add(this);
-        
         _game = new ();
         _game.Start();
         
@@ -45,8 +43,6 @@ public class GameLoop
             _game.Update();
                
             _game.window.Draw(drawableObjects);
-            if(test<int.MaxValue)
-                test++;
         }
     }
 
@@ -57,10 +53,6 @@ public class GameLoop
             updatableObjects[i].Update();
         }
 
-        for (int i = 0; i < savableObjects.Count; i++)
-        {
-            savableObjects[i].Save();
-        }
     }
     
     public void RegisterGameObject(GameObject gameObject)
@@ -78,13 +70,6 @@ public class GameLoop
             if (!updatableObjects.Contains(gameObject as IUpdatable))
             {
                 updatableObjects.Add(gameObject as IUpdatable);
-            }
-        }
-        if (gameObject is ISavable)
-        {
-            if (!savableObjects.Contains(gameObject as ISavable))
-            {
-                savableObjects.Add(gameObject as ISavable);
             }
         }
     }
