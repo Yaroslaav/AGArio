@@ -105,7 +105,7 @@ public class Game
 
     private void CreateBindings()
     {
-        BindKey changeSoulKey = Input.AddNewBind(Keyboard.Key.F, "ChangeSoul", PressType.Press);
-        changeSoulKey.onActivate += SwapMainPlayer;
+        BindKey changeSoulKey = Input.AddNewBind(Keyboard.Key.F, "ChangeSoul");
+        changeSoulKey.OnKeyPress += SwapMainPlayer;
     }
 }

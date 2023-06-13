@@ -53,8 +53,8 @@ public class Player : GameObject
     {
         if (!isBot)
         {
-            BindKey shieldActivationKey = Input.AddNewBind( Keyboard.Key.S, "ActivateShield", PressType.Press);
-            shieldActivationKey.onActivate += ActivateShield;
+            BindKey shieldActivationKey = Input.AddNewBind( Keyboard.Key.S, "ActivateShield");
+            shieldActivationKey.OnKeyPress += ActivateShield;
         }
     }
 

@@ -7,7 +7,6 @@ public static class Input
     private static Random rand = new ();
     
     public static Vector2f lastPlayerDirection = new (0,0);
-    public static Keyboard.Key lastKeyboardKey = Keyboard.Key.Unknown;
     
     private static Dictionary<string, BindKey> keys = new(0);
 
@@ -54,9 +53,9 @@ public static class Input
         }
     }
 
-    public static BindKey AddNewBind(Keyboard.Key key, string name, PressType pressType)
+    public static BindKey AddNewBind(Keyboard.Key key, string name)
     {
-        BindKey bindKey = new BindKey(key, pressType);
+        BindKey bindKey = new BindKey(key);
         keys.Add(name, bindKey);
         return bindKey;
     }

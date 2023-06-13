@@ -1,45 +1,39 @@
 using SFML.Window;
 
-public enum PressType
-{
-    KeyUp,
-    KeyDown,
-    Press,
-}
 public class BindKey
 {
-    public Action onActivate;
+    public Action OnKeyPress;
+    public Action OnKeyDown;
+    public Action OnKeyUp;
 
     private Keyboard.Key key;
     
-    private PressType _pressType;
-    private bool _activationKeyActive;
+    private bool _wasPressed;
 
-    public BindKey(Keyboard.Key key, PressType pressType)
+    public BindKey(Keyboard.Key key)
     {
         this.key = key;
-        _pressType = pressType;
     }
     
     public void CheckInput()
     {
-        GetKeyDown();
-        
-        if(GetKeyboardInput())
-            onActivate?.Invoke();
+        CheckKeyboardInput();
     }
-    private bool GetKeyboardInput() => _pressType switch
+
+    private void CheckKeyboardInput()
     {
-        PressType.Press => GetKeyPress(),
-        PressType.KeyDown => GetKeyDown(),
-        PressType.KeyUp => GetKeyUp(),
-        _ => false,
-    };
+        if(GetKeyUp())
+            OnKeyUp?.Invoke();
+        if(GetKeyPress())
+            OnKeyPress?.Invoke();
+        if(GetKeyDown())
+            OnKeyDown?.Invoke();
+    }
     private bool GetKeyUp()
     {
-        if (Input.lastKeyboardKey == key && !GetKeyDown())
+        if (_wasPressed && !GetKeyDown())
         {
-            Input.lastKeyboardKey = Keyboard.Key.Unknown;
+            _wasPressed = false;
             return true;
         }
         return false;
@@ -48,7 +42,7 @@ public class BindKey
     {
         if (Keyboard.IsKeyPressed(key))
         {
-            Input.lastKeyboardKey = key;
+            _wasPressed = true;
             return true;
         }
 
@@ -57,12 +51,12 @@ public class BindKey
     
     private bool GetKeyPress()
     {
-        if (!_activationKeyActive)
+        if (!_wasPressed)
         {
-            _activationKeyActive = Keyboard.IsKeyPressed(key);
+            _wasPressed = Keyboard.IsKeyPressed(key);
             return Keyboard.IsKeyPressed(key);
         }
-        _activationKeyActive = Keyboard.IsKeyPressed(key);
+        _wasPressed = Keyboard.IsKeyPressed(key);
 
         return false;
 
