@@ -34,8 +34,8 @@ public static class Input
     {
         Vector2f direction = new (0,0);
         
-        direction.X = rand.Next(-GameSettings.FIELD_WIDTH, GameSettings.FIELD_WIDTH);
-        direction.Y = rand.Next(-GameSettings.FIELD_HEIGHT, GameSettings.FIELD_HEIGHT);
+        direction.X = rand.Next(-GameSettings.fieldWidth, GameSettings.fieldWidth);
+        direction.Y = rand.Next(-GameSettings.fieldHeiHeight, GameSettings.fieldHeiHeight);
 
         if (direction.X == 0 || direction.Y == 0)
         {

@@ -22,7 +22,7 @@ public class Food : GameObject
 
     public void OnWasEaten()
     {
-        shape.Position = new Vector2f(random.Next(GameSettings.WINDOW_WIDTH), random.Next(GameSettings.WINDOW_HEIGHT));
+        shape.Position = new Vector2f(random.Next((int)GameSettings.windowWidth), random.Next((int)GameSettings.windowHeight));
     }
     protected override Shape GetOriginalShape()
     {

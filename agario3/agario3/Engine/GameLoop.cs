@@ -18,14 +18,13 @@ public class GameLoop
     {
         if (Instance == null)
             Instance = this;
-        
+        new GameSettings();
         _game = new ();
         _game.Start();
         
         _game.window.renderWindow.Closed += (_, _) => isPlaying = false;
 
         isPlaying = true;
-        //AddSavableItem(test);
         Loop();
     }
     private void Loop()

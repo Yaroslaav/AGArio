@@ -35,7 +35,7 @@ public class Window
     }
     public void SetWindow()
     {
-        renderWindow = new RenderWindow(new VideoMode(GameSettings.WINDOW_WIDTH, GameSettings.WINDOW_HEIGHT), "Aero Hockey");
+        renderWindow = new RenderWindow(new VideoMode(GameSettings.windowWidth, GameSettings.windowHeight), GameSettings.windowTitle);
         renderWindow.SetFramerateLimit(600);
         Clear();
     }
@@ -47,9 +47,9 @@ public class Window
         Clear();
         renderWindow.Close();
     }
-    public Vector2u GetWindowCenter() => new (GameSettings.WINDOW_WIDTH / 2, GameSettings.WINDOW_HEIGHT / 2);
+    public Vector2u GetWindowCenter() => new (GameSettings.windowWidth / 2, GameSettings.windowHeight / 2);
     public Vector2f MapPixelToCoords(Vector2i position) => renderWindow.MapPixelToCoords(position);
 
-    public Vector2f GetRandomPosition() => new Vector2f(random.Next(GameSettings.FIELD_WIDTH),
-        random.Next(GameSettings.FIELD_HEIGHT));
+    public Vector2f GetRandomPosition() => new Vector2f(random.Next(GameSettings.fieldWidth),
+        random.Next(GameSettings.fieldHeiHeight));
 }

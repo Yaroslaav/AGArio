@@ -29,7 +29,7 @@ public class Game
         window = new ();
         mainCamera = new ();
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < GameSettings.maxPlayersAmount; i++)
         {
             SpawnPlayer();
         }

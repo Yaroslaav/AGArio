@@ -7,13 +7,13 @@ public static class MathExtensions
         size /= 2;
         if (position.X < size.X)
             position.X = size.X;
-        else if (position.X > GameSettings.FIELD_WIDTH - size.X)
-            position.X = GameSettings.FIELD_WIDTH - size.X;
+        else if (position.X > GameSettings.fieldWidth - size.X)
+            position.X = GameSettings.fieldWidth - size.X;
 
         if (position.Y < size.Y)
             position.Y = size.Y;
-        else if (position.Y > GameSettings.FIELD_HEIGHT - size.Y)
-            position.Y = GameSettings.FIELD_HEIGHT - size.Y;
+        else if (position.Y > GameSettings.fieldHeiHeight - size.Y)
+            position.Y = GameSettings.fieldHeiHeight - size.Y;
         return position;
     }
 
