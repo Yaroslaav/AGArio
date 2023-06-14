@@ -17,14 +17,13 @@ public class GameObject : Transformable, IDrawable, IUpdatable
     protected Texture texture;
 
 
-    public (Shape, Sprite) GetShape() => (GetOriginalShape(), GetSprite());
+    public Shape GetShape() => (GetOriginalShape());
 
     protected virtual Shape GetOriginalShape()
     {
         return null;
     }
 
-    protected virtual Sprite GetSprite() => null;
     public virtual void Awake(GameObjArgs args)
     {
         

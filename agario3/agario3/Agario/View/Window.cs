@@ -25,14 +25,7 @@ public class Window
         
         for (int i = 0; i < drawableObjects.Count; i++)
         {
-            (Shape _shape, Sprite _sprite) = drawableObjects[i].GetShape();
-                renderWindow.Draw(_shape);
-            if (_sprite != null)
-            {
-                renderWindow.Draw(_sprite);
-            }
-            
-            
+            renderWindow.Draw(drawableObjects[i].GetShape());
         }
         renderWindow.Display();
     }
