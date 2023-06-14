@@ -28,11 +28,9 @@ public class Shield : GameObject
         spawnTime = Time.totalSeconds;
         shape.Radius = args.size.X/2;
         shape.Origin = new Vector2f(shape.Radius, shape.Radius);
-        texture = args.texture;
         shape.Position = args.Position;
         Position = args.Position;
         shape.Texture = texture;
-        shape.TextureRect = args.Rect; 
         shape.FillColor = args.fillColor;
     }
 

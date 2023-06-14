@@ -1,3 +1,5 @@
+using SFML.Graphics;
+
 public class GameSettings
 {
     public static uint windowWidth = 1600;

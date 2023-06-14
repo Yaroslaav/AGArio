@@ -22,18 +22,16 @@ public class BindKey
 
     private void CheckKeyboardInput()
     {
-        if(GetKeyUp())
-            OnKeyUp?.Invoke();
-        if(GetKeyPress())
-            OnKeyPress?.Invoke();
-        if(GetKeyDown())
-            OnKeyDown?.Invoke();
+        GetKeyUp();
+        GetKeyPress();
+        GetKeyDown();
     }
     private bool GetKeyUp()
     {
         if (_wasPressed && !GetKeyDown())
         {
             _wasPressed = false;
+            OnKeyUp?.Invoke();
             return true;
         }
         return false;
@@ -43,6 +41,7 @@ public class BindKey
         if (Keyboard.IsKeyPressed(key))
         {
             _wasPressed = true;
+            OnKeyDown?.Invoke();
             return true;
         }
 
@@ -51,12 +50,15 @@ public class BindKey
     
     private bool GetKeyPress()
     {
+        bool isPresses = Keyboard.IsKeyPressed(key);
         if (!_wasPressed)
         {
-            _wasPressed = Keyboard.IsKeyPressed(key);
-            return Keyboard.IsKeyPressed(key);
+            _wasPressed = isPresses;
+            if(isPresses)
+                OnKeyPress?.Invoke();
+            return isPresses;
         }
-        _wasPressed = Keyboard.IsKeyPressed(key);
+        _wasPressed = isPresses;
 
         return false;
 

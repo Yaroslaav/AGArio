@@ -54,7 +54,7 @@ public class Game
     
     private void SpawnPlayer()
     {
-        Player spawnedPlayer = this.CreateActor<Player>(new Vector2f(60,60), new IntRect(0, 0, 60, 60), null,
+        Player spawnedPlayer = this.CreateActor<Player>(new Vector2f(60, 60), new Texture("PlayerAnim.png"),
             new Vector2f(window.GetRandomPosition().X, window.GetRandomPosition().Y), Color.Green, Color.Black);
         spawnedPlayer.Start(ownPlayer != null);
         
@@ -69,8 +69,7 @@ public class Game
     private void SpawnFood()
     {
         Vector2f foodPosition = window.GetRandomPosition();
-        Food food = this.CreateActor<Food>(new Vector2f(20,20), new IntRect(0, 0, 20, 20), null, foodPosition, Color.Red, 
-            Color.White);
+        Food food = this.CreateActor<Food>(new Vector2f(20, 20), null, foodPosition, Color.Red, Color.White);
         foodList.Add(food);
     }
 

@@ -4,7 +4,6 @@ using SFML.System;
 public struct GameObjArgs
 {
     public Vector2f size;
-    public IntRect Rect;
     public Vector2f Position;
     public Texture texture;
     public Color fillColor;
@@ -18,12 +17,14 @@ public class GameObject : Transformable, IDrawable, IUpdatable
     protected Texture texture;
 
 
-    public Shape GetShape() => GetOriginalShape();
+    public (Shape, Sprite) GetShape() => (GetOriginalShape(), GetSprite());
 
     protected virtual Shape GetOriginalShape()
     {
         return null;
     }
+
+    protected virtual Sprite GetSprite() => null;
     public virtual void Awake(GameObjArgs args)
     {
         

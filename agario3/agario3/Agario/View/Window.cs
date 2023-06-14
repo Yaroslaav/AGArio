@@ -17,10 +17,6 @@ public class Window
         SetWindow();
     }
     
-    public void Draw(IDrawable drawableObject)
-    {
-        renderWindow.Draw(drawableObject.GetShape());
-    }
     public void Draw(List<IDrawable> drawableObjects)
     {
         DispatchEvents();
@@ -29,7 +25,14 @@ public class Window
         
         for (int i = 0; i < drawableObjects.Count; i++)
         {
-            renderWindow.Draw(drawableObjects[i].GetShape());
+            (Shape _shape, Sprite _sprite) = drawableObjects[i].GetShape();
+                renderWindow.Draw(_shape);
+            if (_sprite != null)
+            {
+                renderWindow.Draw(_sprite);
+            }
+            
+            
         }
         renderWindow.Display();
     }

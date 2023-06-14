@@ -12,10 +12,8 @@ public class Food : GameObject
     {
         mass = 1;
         shape.Radius = args.size.X/2;
-        texture = args.texture;
         shape.Position = args.Position;
         shape.Texture = texture;
-        shape.TextureRect = args.Rect;
         shape.FillColor = args.fillColor;
 
     }
