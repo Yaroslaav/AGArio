@@ -23,7 +23,6 @@ public class Player : GameObject, IAnimated
     private int shieldCooldown = 10;
     
     public Texture texture { get; set; }
-    public Sprite _sprite { get; set; }
     public Vector2i spriteSize { get; set; }
     public int currentFrame { get; set; }
     public int milliSecondsBetweenAnimation { get; set; } = 100;
@@ -48,7 +47,6 @@ public class Player : GameObject, IAnimated
         shape.Origin = new Vector2f(shape.Radius, shape.Radius);
         
         texture = args.texture;
-        _sprite = new(texture);
         spriteSize = new(30,30);
         
         shape.Position = args.Position;
@@ -56,6 +54,7 @@ public class Player : GameObject, IAnimated
         shape.FillColor = args.fillColor;
         
         OnWasEaten += () => Game.instance.DestroyGameObject(this);
+        shape.Texture = args.texture;
         SetFirstAnimationFrame();
     }
 
@@ -79,10 +78,7 @@ public class Player : GameObject, IAnimated
     {
         return shape;
     }
-    protected override Sprite GetSprite()
-    {
-        return _sprite;
-    }
+    
 
 
     public override void Update()
@@ -157,22 +153,16 @@ public class Player : GameObject, IAnimated
         {
             currentFrame++;
             Vector2i nextFrameStartposition = new(spriteSize.X * currentFrame, 0);
-            if (nextFrameStartposition.X >= _sprite.Texture.Size.X)
+            if (nextFrameStartposition.X >= texture.Size.X)
                 currentFrame = 0;
-            _sprite.TextureRect = new IntRect(spriteSize.X * currentFrame, 0, spriteSize.X, spriteSize.Y);
+            shape.TextureRect = new IntRect(spriteSize.X * currentFrame, 0, spriteSize.X, spriteSize.Y);
             lastAnimationTime = Time.totalMilliSeconds;
         }
-        UpdateSprite();
     }
     private bool CanChangeAnimationFrame() => Time.totalMilliSeconds >= lastAnimationTime + milliSecondsBetweenAnimation;
-    public void UpdateSprite()
-    {
-        _sprite.Position = shape.Position;
-        _sprite.Scale = new Vector2f(shape.Radius / spriteSize.X, shape.Radius / spriteSize.Y);
-    }
     private void SetFirstAnimationFrame()
     {
-        _sprite.TextureRect = new IntRect(spriteSize.X, 0, spriteSize.X, spriteSize.Y);
+        shape.TextureRect = new IntRect(spriteSize.X, 0, spriteSize.X, spriteSize.Y);
         lastAnimationTime = Time.totalMilliSeconds;
     }
 }
