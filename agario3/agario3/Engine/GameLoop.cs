@@ -8,7 +8,6 @@ public class GameLoop
     
     private List<IDrawable> drawableObjects = new();
     private List<IUpdatable> updatableObjects = new();
-    private List<IAnimated> animatedObjects = new();
     
     private Camera _camera
     {
@@ -52,10 +51,6 @@ public class GameLoop
         {
             updatableObjects[i].Update();
         }
-        for (int i = 0; i < animatedObjects.Count; i++)
-        {
-            animatedObjects[i].UpdateAnimation();
-        }
     }
     
     public void RegisterGameObject(GameObject gameObject)
@@ -74,13 +69,6 @@ public class GameLoop
                 updatableObjects.Add(gameObject as IUpdatable);
             }
         }
-        if (gameObject is IAnimated)
-        {
-            if (!animatedObjects.Contains(gameObject as IAnimated))
-            {
-                animatedObjects.Add(gameObject as IAnimated);
-            }
-        }
     }
 
     public void UnRegisterGameObject(GameObject gameObject)
@@ -92,10 +80,6 @@ public class GameLoop
         if (drawableObjects.Contains(gameObject as IDrawable))
         {
             drawableObjects.Remove(gameObject as IDrawable);
-        }
-        if (animatedObjects.Contains(gameObject as IAnimated))
-        {
-            animatedObjects.Remove(gameObject as IAnimated);
         }
     }
 }
