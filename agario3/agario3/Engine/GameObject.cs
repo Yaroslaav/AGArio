@@ -14,7 +14,9 @@ public class GameObject : Transformable, IDrawable, IUpdatable
     public int mass = 0;
     public int ZPosition { get; set; } = 0;
 
-    protected Texture texture;
+    protected Texture texture { get; set; }
+
+    private List<Component> _components = new ();
 
 
     public Shape GetShape() => (GetOriginalShape());
@@ -31,8 +33,25 @@ public class GameObject : Transformable, IDrawable, IUpdatable
 
     public virtual void Update()
     {
-        
+        UpdateComponents();
     }
 
-    
+    public Component AddComponent(Component component)
+    {
+        foreach (Component _component in _components)
+        {
+            if(_component.Name == component.Name)
+                return _component;
+        }
+        _components.Add(component);
+        return component;
+    }
+
+    public void UpdateComponents()
+    {
+        foreach (var component in _components)
+        {
+            component.Update();
+        }
+    }
 }
