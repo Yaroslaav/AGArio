@@ -1,7 +1,6 @@
 # Rider and Visual Studio specific files
 .vs/
 .idea/
-*.sln
 *.suo
 *.user
 *.userosscache
