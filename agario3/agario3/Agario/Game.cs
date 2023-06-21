@@ -13,6 +13,8 @@ public class Game
 
     public Player ownPlayer { get; private set; }
     public List<Player> players = new List<Player>();
+
+    private string PlayerTexturesFolderPath = "PlayerAnimations/";
     
     public Vector2f ownPlayerPosition
     {
@@ -53,7 +55,12 @@ public class Game
     
     private void SpawnPlayer()
     {
-        Player spawnedPlayer = this.CreateActor<Player>(new Vector2f(60, 60), new Texture("PlayerAnim.png"),
+
+        string[] textureFiles = Directory.GetFiles(PlayerTexturesFolderPath, "*.png", SearchOption.AllDirectories);
+
+        Texture playerTexture = new Texture(textureFiles[Rand.Next(textureFiles.Length)]);
+
+        Player spawnedPlayer = this.CreateActor<Player>(new Vector2f(60, 60), playerTexture,
             new Vector2f(window.GetRandomPosition().X, window.GetRandomPosition().Y), Color.Green, Color.Black);
         spawnedPlayer.Start(ownPlayer != null);
         

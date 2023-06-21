@@ -2,7 +2,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-public static class Input
+public class Input
 {
     
     public static Vector2f lastPlayerDirection = new (0,0);
@@ -22,7 +22,7 @@ public static class Input
     private static void CheckMouseInput()
     {
         Vector2i mousePosition = Mouse.GetPosition(window.renderWindow);
-        Vector2f targetPosition = window.MapPixelToCoords(mousePosition);
+        Vector2f targetPosition = window.renderWindow.MapPixelToCoords(mousePosition);
         Vector2f direction = targetPosition;
 
         lastPlayerDirection = direction;

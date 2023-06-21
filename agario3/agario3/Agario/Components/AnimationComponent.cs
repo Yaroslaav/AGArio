@@ -11,7 +11,7 @@ public class AnimationComponent : Component
     private Texture _texture;
     private Vector2i _spriteSize;
     private int _currentFrame;
-    private int _milliSecondsBetweenAnimation;
+    private int _milliSecondsBetweenFrames;
     private float _lastAnimationTime;
 
     private Shape _shape;
@@ -19,7 +19,7 @@ public class AnimationComponent : Component
     public AnimationComponent(string name, GameObject gameObject, AnimationArgs args) : base(name, gameObject)
     {
         _spriteSize = args.spriteSize;
-        _milliSecondsBetweenAnimation = args.milliSecondsBetweenAnimation;
+        _milliSecondsBetweenFrames = args.milliSecondsBetweenAnimation;
     }
     
     public override void Awake()
@@ -32,7 +32,7 @@ public class AnimationComponent : Component
     {
         _shape = gameObject.GetShape();
         _texture = _shape.Texture;
-        
+         
         _shape.TextureRect = new IntRect(0, 0, _spriteSize.X, _spriteSize.Y);
         _lastAnimationTime = Time.totalMilliSeconds;
     }
@@ -49,14 +49,14 @@ public class AnimationComponent : Component
         if (CanChangeAnimationFrame())
         {
             _currentFrame++;
-            Vector2i nextFrameStartposition = new(_spriteSize.X * _currentFrame, 0);
-            if (nextFrameStartposition.X >= _texture.Size.X)
+            Vector2i nextFrameStartPosition = new(_spriteSize.X * _currentFrame, 0);
+            if (nextFrameStartPosition.X >= _texture.Size.X)
                 _currentFrame = 0;
             _shape.TextureRect = new IntRect(_spriteSize.X * _currentFrame, 0, _spriteSize.X, _spriteSize.Y);
             _lastAnimationTime = Time.totalMilliSeconds;
 
         }
     }
-    private bool CanChangeAnimationFrame() => Time.totalMilliSeconds >= _lastAnimationTime + _milliSecondsBetweenAnimation;
+    private bool CanChangeAnimationFrame() => Time.totalMilliSeconds >= _lastAnimationTime + _milliSecondsBetweenFrames;
 
 }

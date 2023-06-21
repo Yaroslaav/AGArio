@@ -1,5 +1,3 @@
-using SFML.System;
-
 public abstract class Component
 {
     protected GameObject gameObject;

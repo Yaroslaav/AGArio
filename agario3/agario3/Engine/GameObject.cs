@@ -47,7 +47,7 @@ public class GameObject : Transformable, IDrawable, IUpdatable
         return component;
     }
 
-    public void UpdateComponents()
+    private void UpdateComponents()
     {
         foreach (var component in _components)
         {
