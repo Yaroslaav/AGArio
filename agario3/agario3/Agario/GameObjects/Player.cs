@@ -5,14 +5,8 @@ using SFML.Window;
 public class Player : GameObject
 {
     public bool isBot;
-    private Vector2f lastBotDirection = new Vector2f(0, 0);
 
-    private int lastMoveTime = 0;
-    private int timeBetweenMoves = 0;
-
-    private float moveSpeed = .1f;
     private float maxMass = 70;
-    public Vector2f Position;
     public CircleShape shape = new();
 
     public bool canBeEaten = true;
@@ -26,7 +20,7 @@ public class Player : GameObject
         get => shape.Radius * 2;
     }
 
-    public Vector2f size
+    public override Vector2f size
     {
         get => new(diameter, diameter);
     }
@@ -46,11 +40,19 @@ public class Player : GameObject
 
         OnWasEaten += () => Game.instance.DestroyGameObject(this);
         shape.Texture = args.texture;
-        
+
+    }
+
+    private void AddComponents()
+    {
         AnimationArgs animArgs = new AnimationArgs();
-        animArgs.spriteSize = new Vector2i(60, 30);
+        animArgs.spriteSize = new Vector2i(31, 31);
         animArgs.milliSecondsBetweenAnimation = 100;
         AddComponent(new AnimationComponent("AnimationComponent", this, animArgs));
+
+        AddComponent(new MovementComponent("MovementComponent", this,
+            isBot ? MovementType.RandomDirection : MovementType.MousePosition));
+
     }
 
     private void CreateBindings()
@@ -67,36 +69,13 @@ public class Player : GameObject
         this.isBot = isBot;
 
         CreateBindings();
+        AddComponents();
     }
 
     protected override Shape GetOriginalShape()
     {
         return shape;
     }
-
-
-
-    public override void Update()
-    {
-        base.Update();
-        TryMove();
-    }
-
-    private void UpdateMovement(Vector2f newDirection)
-    {
-        Vector2f direction = newDirection - Position;
-
-        if (direction.X != 0 || direction.Y != 0)
-        {
-            direction = direction.Normalize();
-
-            Position += direction * moveSpeed * Time.deltaTime;
-        }
-
-        Position = Position.ClampByWindowSize(size);
-        shape.Position = Position;
-    }
-
     public void OnEat(float mass)
     {
         if (this.mass < maxMass)
@@ -107,28 +86,12 @@ public class Player : GameObject
         }
     }
 
-    private void TryMove()
-    {
-        if (Time.totalSeconds >= lastMoveTime + timeBetweenMoves)
-        {
-            lastBotDirection = Input.GetRandomBotDirection();
-            timeBetweenMoves = Rand.Next(10);
-            lastMoveTime = Time.totalSeconds;
-        }
-
-        if (!isBot)
-        {
-            UpdateMovement(Input.lastPlayerDirection);
-        }
-        else
-        {
-            UpdateMovement(lastBotDirection);
-        }
-    }
 
     public void OnSwitchSoul()
     {
         isBot = !isBot;
+        GetComponent<MovementComponent>()
+            .ChangeMovementType(isBot ? MovementType.RandomDirection : MovementType.MousePosition);
     }
 
     private void ActivateShield()

@@ -2,7 +2,7 @@
 using SFML.Graphics;
 public static class GameObjectFabrik
 {
-    public static T CreateActor<T>(this Game game, Vector2f size, Texture texture, Vector2f position, Color fillColor, Color borderColor) where T:GameObject,new()
+    public static T CreateActor<T>(this Game game, Vector2f size, Texture texture, Vector2f position, Color fillColor, Color borderColor) where T : GameObject,new()
     {
         T t = CreateActor_Internal<T>(size, texture, position, fillColor, borderColor);
         if (t == null)

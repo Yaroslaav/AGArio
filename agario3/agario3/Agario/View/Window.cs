@@ -42,14 +42,10 @@ public class Window
         Clear();
         renderWindow.Close();
     }
-    public Vector2u GetWindowCenter() => new (GameSettings.windowWidth / 2, GameSettings.windowHeight / 2);
     public Vector2f MapPixelToCoords(Vector2i position) => renderWindow.MapPixelToCoords(position);
 
-    public Vector2f GetRandomPosition() => new Vector2f(Rand.Next(GameSettings.fieldWidth),
-        Rand.Next(GameSettings.fieldHeiHeight));
 
-    public Vector2i GetMousePosition()
-    {
-        return Mouse.GetPosition(renderWindow);
-    }
+    public Vector2i GetMousePosition() => Mouse.GetPosition(renderWindow);
+    
+
 }

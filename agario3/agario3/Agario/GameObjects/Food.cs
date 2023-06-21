@@ -6,7 +6,11 @@ public class Food : GameObject
 
     public CircleShape shape = new ();
 
-    
+    public override Vector2f size
+    {
+        get => new(shape.Radius * 2, shape.Radius * 2);  
+    }
+
     public override void Awake(GameObjArgs args)
     {
         mass = 1;

@@ -21,8 +21,7 @@ public class Input
     }
     private static void CheckMouseInput()
     {
-        Vector2i mousePosition = Mouse.GetPosition(window.renderWindow);
-        Vector2f targetPosition = window.renderWindow.MapPixelToCoords(mousePosition);
+        Vector2f targetPosition = window.MapPixelToCoords(window.GetMousePosition());
         Vector2f direction = targetPosition;
 
         lastPlayerDirection = direction;
@@ -33,7 +32,7 @@ public class Input
         Vector2f direction = new (0,0);
         
         direction.X = Rand.Next(-GameSettings.fieldWidth, GameSettings.fieldWidth);
-        direction.Y = Rand.Next(-GameSettings.fieldHeiHeight, GameSettings.fieldHeiHeight);
+        direction.Y = Rand.Next(-GameSettings.fieldHeight, GameSettings.fieldHeight);
 
         if (direction.X == 0 || direction.Y == 0)
         {

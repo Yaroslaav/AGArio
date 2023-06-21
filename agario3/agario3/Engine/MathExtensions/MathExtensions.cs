@@ -12,8 +12,8 @@ public static class MathExtensions
 
         if (position.Y < size.Y)
             position.Y = size.Y;
-        else if (position.Y > GameSettings.fieldHeiHeight - size.Y)
-            position.Y = GameSettings.fieldHeiHeight - size.Y;
+        else if (position.Y > GameSettings.fieldHeight - size.Y)
+            position.Y = GameSettings.fieldHeight - size.Y;
         return position;
     }
 

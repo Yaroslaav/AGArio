@@ -5,7 +5,7 @@ public class GameSettings
     public static uint windowWidth = 1600;
     public static uint windowHeight = 900;
     public static int fieldWidth = 1600;
-    public static int fieldHeiHeight = 900;
+    public static int fieldHeight = 900;
     public static string windowTitle = "Agario!";
     
     public static int maxFoodAmount = 100;

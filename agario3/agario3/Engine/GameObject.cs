@@ -20,6 +20,7 @@ public class GameObject : Transformable, IDrawable, IUpdatable
 
 
     public Shape GetShape() => (GetOriginalShape());
+    public virtual Vector2f size { get; set; }
 
     protected virtual Shape GetOriginalShape()
     {
@@ -53,5 +54,18 @@ public class GameObject : Transformable, IDrawable, IUpdatable
         {
             component.Update();
         }
+    }
+
+    public T GetComponent<T>() where T : Component
+    {
+        T componentInstance = Activator.CreateInstance<T>();
+
+        foreach (var component in _components)
+        {
+            if (componentInstance.GetType() == component.GetType())
+                return component as T;
+        }
+
+        return null;
     }
 }
