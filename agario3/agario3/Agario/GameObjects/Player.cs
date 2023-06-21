@@ -4,8 +4,6 @@ using SFML.Window;
 
 public class Player : GameObject
 {
-    private Random rand = new();
-
     public bool isBot;
     private Vector2f lastBotDirection = new Vector2f(0, 0);
 
@@ -114,7 +112,7 @@ public class Player : GameObject
         if (Time.totalSeconds >= lastMoveTime + timeBetweenMoves)
         {
             lastBotDirection = Input.GetRandomBotDirection();
-            timeBetweenMoves = rand.Next(10);
+            timeBetweenMoves = Rand.Next(10);
             lastMoveTime = Time.totalSeconds;
         }
 

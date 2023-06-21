@@ -4,7 +4,6 @@ using SFML.Window;
 
 public class Game
 {
-    private Random rand = new Random();
     public static Game instance { get; private set; }
     
     public Camera mainCamera { get; private set; }
@@ -75,7 +74,7 @@ public class Game
 
     private void SwapMainPlayer()
     {
-        Player randomPlayer = players[rand.Next(players.Count)];
+        Player randomPlayer = players[Rand.Next(players.Count)];
         ownPlayer.OnSwitchSoul();
         randomPlayer.OnSwitchSoul();
         ownPlayer = randomPlayer;

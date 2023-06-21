@@ -4,7 +4,6 @@ using SFML.Window;
 
 public static class Input
 {
-    private static Random rand = new ();
     
     public static Vector2f lastPlayerDirection = new (0,0);
     
@@ -33,8 +32,8 @@ public static class Input
     {
         Vector2f direction = new (0,0);
         
-        direction.X = rand.Next(-GameSettings.fieldWidth, GameSettings.fieldWidth);
-        direction.Y = rand.Next(-GameSettings.fieldHeiHeight, GameSettings.fieldHeiHeight);
+        direction.X = Rand.Next(-GameSettings.fieldWidth, GameSettings.fieldWidth);
+        direction.Y = Rand.Next(-GameSettings.fieldHeiHeight, GameSettings.fieldHeiHeight);
 
         if (direction.X == 0 || direction.Y == 0)
         {

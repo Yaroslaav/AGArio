@@ -3,7 +3,6 @@ using SFML.System;
 
 public class Food : GameObject
 {
-    Random random = new ();
 
     public CircleShape shape = new ();
 
@@ -20,7 +19,7 @@ public class Food : GameObject
 
     public void OnWasEaten()
     {
-        shape.Position = new Vector2f(random.Next((int)GameSettings.windowWidth), random.Next((int)GameSettings.windowHeight));
+        shape.Position = new Vector2f(Rand.Next((int)GameSettings.windowWidth), Rand.Next((int)GameSettings.windowHeight));
     }
     protected override Shape GetOriginalShape()
     {
