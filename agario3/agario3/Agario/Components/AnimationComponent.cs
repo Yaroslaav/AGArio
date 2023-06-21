@@ -43,6 +43,10 @@ public class AnimationComponent : Component
 
     public override void Update()
     {
+        if (gameObject is Food)
+        {
+            Console.WriteLine();
+        }
         if(_texture == null)
             return;
         TrySetNextFrame();

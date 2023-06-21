@@ -14,7 +14,8 @@ public class Game
     public Player ownPlayer { get; private set; }
     public List<Player> players = new List<Player>();
 
-    private string PlayerTexturesFolderPath = "PlayerAnimations/";
+    private string playerTexturesFolderPath = "PlayerAnimations/";
+    private string foodTexturesFolderPath = "FoodAnimations/";
     
     public Vector2f ownPlayerPosition
     {
@@ -56,7 +57,7 @@ public class Game
     private void SpawnPlayer()
     {
 
-        string[] textureFiles = Directory.GetFiles(PlayerTexturesFolderPath, "*.png", SearchOption.AllDirectories);
+        string[] textureFiles = Directory.GetFiles(playerTexturesFolderPath, "*.png", SearchOption.AllDirectories);
 
         Texture playerTexture = new Texture(textureFiles[Rand.Next(textureFiles.Length)]);
 
@@ -74,8 +75,14 @@ public class Game
     }
     private void SpawnFood()
     {
+        string[] textureFiles = Directory.GetFiles(foodTexturesFolderPath, "*.png", SearchOption.AllDirectories);
+
+        Texture foodTexture = new Texture(textureFiles[Rand.Next(textureFiles.Length)]);
+
+
         Vector2f foodPosition = window.GetRandomPosition();
-        Food food = this.CreateActor<Food>(new Vector2f(20, 20), null, foodPosition, Color.Red, Color.White);
+        Food food = this.CreateActor<Food>(new Vector2f(30, 30), foodTexture, foodPosition, Color.Red, Color.White);
+        food.Start();
         foodList.Add(food);
     }
 
