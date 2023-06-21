@@ -34,16 +34,16 @@ public class MovementComponent : Component
         this.gameObject = gameObject;
         this.movementType = movementType;
         
-        position = window.GetRandomPosition();
+        /*position = window.GetRandomPosition();
         position = position.ClampByWindowSize(size);
-        this.gameObject.GetShape().Position = position;
-        //SetPosition(window.GetRandomPosition());
+        this.gameObject.GetShape().Position = position;*/
+        SetPosition(window.GetRandomPosition());
         Start();
     }
     private void SetPosition(Vector2f position)
     {
-        position = position.ClampByWindowSize(size);
-        gameObject.GetShape().Position = position;
+        this.position = position.ClampByWindowSize(size);
+        gameObject.GetShape().Position = this.position;
     }
 
     public override void Update()
