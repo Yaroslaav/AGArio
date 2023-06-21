@@ -16,10 +16,14 @@ public class AnimationComponent : Component
 
     private Shape _shape;
     
-    public AnimationComponent(string name, GameObject gameObject, AnimationArgs args) : base(name, gameObject)
+
+    public void Setup(GameObject gameObject, AnimationArgs args)
     {
+        Awake();
+        this.gameObject = gameObject;
         _spriteSize = args.spriteSize;
         _milliSecondsBetweenFrames = args.milliSecondsBetweenAnimation;
+        Start();
     }
     
     public override void Awake()

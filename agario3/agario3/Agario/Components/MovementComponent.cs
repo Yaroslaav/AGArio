@@ -27,16 +27,18 @@ public class MovementComponent : Component
         get => gameObject.size;
     }
 
-    public MovementComponent(string name, GameObject gameObject, MovementType movementType) : base(name, gameObject)
+
+    public void Setup(GameObject gameObject, MovementType movementType)
     {
+        Awake();
         this.gameObject = gameObject;
-        this.Name = name;
         this.movementType = movementType;
         
         position = window.GetRandomPosition();
         position = position.ClampByWindowSize(size);
         this.gameObject.GetShape().Position = position;
         //SetPosition(window.GetRandomPosition());
+        Start();
     }
     private void SetPosition(Vector2f position)
     {

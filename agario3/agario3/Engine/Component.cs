@@ -1,14 +1,6 @@
 public abstract class Component
 {
     protected GameObject gameObject;
-    public string Name { get; protected set; }
-    public Component(string name, GameObject gameObject)
-    {
-        this.gameObject = gameObject;
-        Name = name;
-        Awake();
-        Start();
-    }
     public virtual void Awake()
     {
         

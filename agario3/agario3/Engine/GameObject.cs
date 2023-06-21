@@ -31,20 +31,25 @@ public class GameObject : Transformable, IDrawable, IUpdatable
     {
         
     }
+    public virtual void Start()
+    {
+        
+    }
 
     public virtual void Update()
     {
         UpdateComponents();
     }
 
-    public Component AddComponent(Component component)
+    public T AddComponent<T>() where T : Component, new()
     {
-        foreach (Component _component in _components)
+        if (GetComponent<T>() != null)
         {
-            if(_component.Name == component.Name)
-                return _component;
+            return GetComponent<T>();
         }
+        T component = Activator.CreateInstance<T>();
         _components.Add(component);
+        
         return component;
     }
 

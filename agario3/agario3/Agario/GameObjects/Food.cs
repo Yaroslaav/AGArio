@@ -21,6 +21,19 @@ public class Food : GameObject
 
     }
 
+    public void Start()
+    {
+        AddComponents();
+    }
+
+    private void AddComponents()
+    {
+        AnimationArgs animArgs = new AnimationArgs();
+        animArgs.spriteSize = new Vector2i(31, 31);
+        animArgs.milliSecondsBetweenAnimation = 100;
+        AddComponent<AnimationComponent>().Setup(this, animArgs);
+    }
+
     public void OnWasEaten()
     {
         shape.Position = new Vector2f(Rand.Next((int)GameSettings.windowWidth), Rand.Next((int)GameSettings.windowHeight));

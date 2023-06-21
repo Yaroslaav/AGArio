@@ -48,10 +48,10 @@ public class Player : GameObject
         AnimationArgs animArgs = new AnimationArgs();
         animArgs.spriteSize = new Vector2i(31, 31);
         animArgs.milliSecondsBetweenAnimation = 100;
-        AddComponent(new AnimationComponent("AnimationComponent", this, animArgs));
+        AddComponent<AnimationComponent>().Setup(this, animArgs);
 
-        AddComponent(new MovementComponent("MovementComponent", this,
-            isBot ? MovementType.RandomDirection : MovementType.MousePosition));
+        AddComponent<MovementComponent>().Setup(this,
+            isBot ? MovementType.RandomDirection : MovementType.MousePosition);
 
     }
 
