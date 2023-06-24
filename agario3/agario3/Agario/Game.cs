@@ -11,9 +11,12 @@ public class Game
     public Window window { get; private set; }
     
     public List<Food> foodList { get; private set; } = new ();
+    
     Sound sound { get; set; }
     SoundBuffer soundBuffer { get; set; }
-
+    
+    AudioSource audioSource { get; set; }
+    
     public Player ownPlayer { get; private set; }
     public List<Player> players = new List<Player>();
 
@@ -46,7 +49,9 @@ public class Game
         mainCamera.SetupCamera();
         
         Time.Start();
-
+        
+        SetBackgroundAudio();
+        
         CreateBindings();
     }
     public void Update()
@@ -57,7 +62,15 @@ public class Game
             players[i].CheckCollisionWithPlayers(players.ToArray());
         }
     }
-    
+
+    private void SetBackgroundAudio()
+    {
+        audioSource = new();
+        audioSource.Setup();
+        audioSource.loop = true;
+        AudioSystem.PlaySoundLooped("Background", audioSource);
+
+    }
     
     private void SpawnPlayer()
     {
