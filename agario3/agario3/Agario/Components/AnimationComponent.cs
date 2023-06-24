@@ -43,10 +43,6 @@ public class AnimationComponent : Component
 
     public override void Update()
     {
-        if (gameObject is Food)
-        {
-            Console.WriteLine();
-        }
         if(_texture == null)
             return;
         TrySetNextFrame();
@@ -66,5 +62,4 @@ public class AnimationComponent : Component
         }
     }
     private bool CanChangeAnimationFrame() => Time.totalMilliSeconds >= _lastAnimationTime + _milliSecondsBetweenFrames;
-
 }

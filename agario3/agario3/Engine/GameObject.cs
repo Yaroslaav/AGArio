@@ -41,17 +41,19 @@ public class GameObject : Transformable, IDrawable, IUpdatable
         UpdateComponents();
     }
 
-    public T AddComponent<T>() where T : Component, new()
+    public T AddComponent<T>() where T : Component
     {
         if (GetComponent<T>() != null)
         {
             return GetComponent<T>();
         }
+
         T component = Activator.CreateInstance<T>();
         _components.Add(component);
         
         return component;
     }
+
 
     private void UpdateComponents()
     {

@@ -1,6 +1,7 @@
 public abstract class Component
 {
     protected GameObject gameObject;
+    public Action OnDestroy;
     public virtual void Awake()
     {
         
@@ -13,6 +14,11 @@ public abstract class Component
     public virtual void Update()
     {
         
+    }
+
+    public virtual void Destroy()
+    {
+       this.DestroyReference(); 
     }
     public GameObject GetGameObject() => gameObject;
 }   

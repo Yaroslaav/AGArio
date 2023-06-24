@@ -40,7 +40,7 @@ public class Player : GameObject
 
         OnWasEaten += () => Game.instance.DestroyGameObject(this);
         shape.Texture = args.texture;
-
+        
     }
 
     private void AddComponents()
@@ -53,6 +53,7 @@ public class Player : GameObject
         AddComponent<MovementComponent>().Setup(this,
             isBot ? MovementType.RandomDirection : MovementType.MousePosition);
 
+        AddComponent<AudioSource>();
     }
 
     private void CreateBindings()
@@ -83,6 +84,14 @@ public class Player : GameObject
             shape.Radius += mass;
             shape.Origin = new Vector2f(shape.Radius, shape.Radius);
             this.mass = (int)shape.Radius / 10;
+            
+            if (!isBot)
+            {
+                AudioSource source = GetComponent<AudioSource>();
+                source.loop = false;
+                source.SetClip("Eat.ogg");
+                source.PlayClip();
+            }
         }
     }
 

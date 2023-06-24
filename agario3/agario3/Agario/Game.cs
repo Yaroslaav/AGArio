@@ -1,3 +1,4 @@
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -10,6 +11,8 @@ public class Game
     public Window window { get; private set; }
     
     public List<Food> foodList { get; private set; } = new ();
+    Sound sound { get; set; }
+    SoundBuffer soundBuffer { get; set; }
 
     public Player ownPlayer { get; private set; }
     public List<Player> players = new List<Player>();
@@ -26,7 +29,10 @@ public class Game
     {
         if(instance == null)
             instance = this;
-        
+
+        //soundBuffer = new("");
+        sound = new(soundBuffer);
+        //sound.Status == SoundStatus.Stopped
         
         window = new ();
         mainCamera = new ();
@@ -52,6 +58,11 @@ public class Game
             players[i].CheckCollisionWithFood(foodList.ToArray());
             players[i].CheckCollisionWithPlayers(players.ToArray());
         }
+    }
+    
+    private void SetBackgroundAudio()
+    {
+        
     }
     
     private void SpawnPlayer()
