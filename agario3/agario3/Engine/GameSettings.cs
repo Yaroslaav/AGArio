@@ -11,7 +11,7 @@ public class GameSettings
     public static int maxFoodAmount = 100;
     public static int maxPlayersAmount = 30;
     
-    private static string pathToCFG = Path.Combine(Directory.GetCurrentDirectory(), "engine.cfg");
+    private static string pathToCFG = "CFGs/engine.cfg";
 
     static GameSettings()
     {

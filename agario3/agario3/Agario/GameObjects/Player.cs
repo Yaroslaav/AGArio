@@ -88,9 +88,7 @@ public class Player : GameObject
             if (!isBot)
             {
                 AudioSource source = GetComponent<AudioSource>();
-                source.loop = false;
-                source.SetClip("Eat.ogg");
-                source.PlayClip();
+                AudioSystem.PlaySoundOnce("EatFood", source);
             }
         }
     }

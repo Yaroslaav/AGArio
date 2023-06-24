@@ -30,10 +30,7 @@ public class Game
         if(instance == null)
             instance = this;
 
-        //soundBuffer = new("");
-        sound = new(soundBuffer);
-        //sound.Status == SoundStatus.Stopped
-        
+        AudioSystem.Setup();
         window = new ();
         mainCamera = new ();
 
@@ -47,6 +44,7 @@ public class Game
         }
  
         mainCamera.SetupCamera();
+        
         Time.Start();
 
         CreateBindings();
@@ -60,10 +58,6 @@ public class Game
         }
     }
     
-    private void SetBackgroundAudio()
-    {
-        
-    }
     
     private void SpawnPlayer()
     {

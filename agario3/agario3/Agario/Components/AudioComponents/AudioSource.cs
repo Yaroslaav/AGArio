@@ -16,10 +16,19 @@ public class AudioSource : Component
 
     public bool loop;
 
-    public AudioClip SetClip(string filePath)
+    public AudioSource()
     {
-        SoundBuffer soundBuffer = new (filePath);
-        currentAudioClip = new(soundBuffer);
+        Setup();
+    }
+
+    public void Setup()
+    {
+        
+    }
+
+    public AudioClip SetClip(AudioClip clip)
+    {
+        currentAudioClip = clip;
         
         return currentAudioClip;
     }
@@ -46,7 +55,7 @@ public class AudioSource : Component
         }
             
     }
-    public void StopClip(string clipName)
+    public void StopClip()
     {
         currentAudioClip.Stop();
     }
